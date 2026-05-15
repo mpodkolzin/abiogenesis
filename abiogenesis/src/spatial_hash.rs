@@ -95,19 +95,16 @@ impl<T> SpatialHashGrid<T> {
         (y * self.cell_count.0 as i32 + x) as usize
     }
 
-    pub fn get_query_cells(&self, pos: Vec2, radius: f32) -> impl Iterator<Item = (i32, i32)> {
+    pub fn get_query_cells(&self, pos: Vec2, radius: f32) -> impl Iterator<Item = (i32, i32)> + '_ {
         let (grid_x, grid_y) = self.world_to_grid(pos);
 
-        gen move {
-            let x_radius = (radius / self.cell_size.x).ceil() as i32;
-            let y_radius = (radius / self.cell_size.y).ceil() as i32;
+        let x_radius = (radius / self.cell_size.x).ceil() as i32;
+        let y_radius = (radius / self.cell_size.y).ceil() as i32;
 
-            for x in (grid_x as i32 - x_radius)..=(grid_x as i32 + x_radius) {
-                for y in (grid_y as i32 - y_radius)..=(grid_y as i32 + y_radius) {
-                    yield self.wrap_coordinates((x, y));
-                }
-            }
-        }
+        ((grid_x - x_radius)..=(grid_x + x_radius)).flat_map(move |x| {
+            ((grid_y - y_radius)..=(grid_y + y_radius))
+                .map(move |y| self.wrap_coordinates((x, y)))
+        })
     }
 }
 

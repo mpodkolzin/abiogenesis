@@ -3,10 +3,14 @@ use rand_distr::uniform;
 
 use crate::particles::{
     colour::*,
-    particle::{MAX_PARTICLES, Particle, ParticleIndex, Velocity},
+    particle::{MAX_PARTICLES, Mass, Particle, ParticleIndex, Velocity},
     simulation::SimulationParams,
     size::SimulationSize,
 };
+
+fn random_mass() -> Mass {
+    Mass(0.5 + rand::random::<f32>() * 2.0)
+}
 
 pub struct SpawnerPlugin;
 impl Plugin for SpawnerPlugin {
@@ -191,6 +195,7 @@ fn respawn_particles(
             Particle,
             transform(color),
             color,
+            random_mass(),
             Mesh2d(particle_assets.mesh.clone()),
         ));
     });
@@ -225,6 +230,7 @@ fn spawn_particle(
                 Transform::from_translation(position.extend(0.0)),
                 Velocity::default(),
                 *color,
+                random_mass(),
             ));
 
             **oldest_particle = (**oldest_particle + 1) % particle_index.len();
@@ -233,6 +239,7 @@ fn spawn_particle(
                 Particle,
                 Transform::from_translation(position.extend(0.0)),
                 *color,
+                random_mass(),
                 Mesh2d(particle_assets.mesh.clone()),
             ));
         }

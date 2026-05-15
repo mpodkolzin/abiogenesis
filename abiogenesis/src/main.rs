@@ -1,8 +1,3 @@
-#![feature(iter_collect_into)]
-#![feature(coroutines)]
-#![feature(gen_blocks)]
-#![feature(trait_alias)]
-
 use bevy::{
     asset::{AssetMetaCheck, load_internal_binary_asset},
     prelude::*,
@@ -69,13 +64,6 @@ fn bevy_systems(app: &mut App) {
         ..default()
     });
 
-    #[cfg(all(debug_assertions, not(feature = "hot_reload")))]
-    app.edit_schedule(Update, |schedule| {
-        schedule.set_build_settings(ScheduleBuildSettings {
-            ambiguity_detection: LogLevel::Warn,
-            ..default()
-        });
-    });
 }
 
 fn third_party_systems(app: &mut App) {
