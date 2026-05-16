@@ -1,5 +1,4 @@
 
-
 [target.aarch64-apple-darwin]
 rustflags = [
   # LLD linker
@@ -11,8 +10,4 @@ rustflags = [
   # Brew: `brew install llvm`
   # Manually: <https://lld.llvm.org/MachO/index.html>
   # "-Clink-arg=-fuse-ld=/opt/homebrew/opt/llvm/bin/ld64.lld",
-
-  # Nightly
-  "-Zshare-generics=y",
-  "-Zthreads=0",
 ]
